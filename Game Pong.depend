@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1657720416 source:c:\users\nelso\documents\repositorios nelson\c\game pong\main.c
+	<stdio.h>
+	"metodos.h"
+
+1657723389 c:\users\nelso\documents\repositorios nelson\c\game pong\metodos.h
+
