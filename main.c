@@ -58,7 +58,6 @@ void inicio (char campo[V][H], int pelX, int pelY,int iniRaquet, int finRaquet, 
     raquetaJugador(campo, iniRaquet, finRaquet);
     raquetaIA(campo, iniRaquetIA, finRaquetIA);
     pelota(campo, pelX, pelY);
-    leerCampo(campo);
 
 }
 

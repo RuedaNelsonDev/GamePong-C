@@ -1,5 +1,6 @@
 
 #include<stdio.h>
+#include<windows.h>
 #include"metodos.h"
 
 
@@ -66,7 +67,7 @@ void raquetaIA(char campo [V][H], int iniRaquetIA, int finRaquetIA)
 
 void pelota (char campo [V][H], int pelX, int pelY)
 {
-    campo[pelY][pelX]='0';
+    campo[pelY][pelX]='O';
 
 }
 
@@ -87,17 +88,26 @@ void leerCampo(char campo[V][H])
 
 }
 
+void update(char campo[V][H], int pelX, int pelY,int iniRaquet, int finRaquet, int iniRaquetIA, int finRaquetIA)
+{
 
+    borde(campo);
+    raquetaJugador(campo, iniRaquet, finRaquet);
+    raquetaIA(campo, iniRaquetIA, finRaquetIA);
+    pelota(campo, pelX, pelY);
+    //leerCampo(campo);
+
+
+}
 void   gameloop(char campo[V][H], int pelX, int pelY,int iniRaquet, int finRaquet, int iniRaquetIA, int finRaquetIA,int modX, int modY, int modIA)
 {
-    int gol;
-    gol = 0;
+    int gol = 0;
     do
     {
 
         draw(campo); //Dibujar en pantalla
         input(campo,&pelX, &pelY, &iniRaquet, &finRaquet, &iniRaquetIA,&finRaquetIA, &modX, &modY, &modIA, &gol);  //Verifica y modificar las posiciones
-        //update(); //Actualizar la matriz campo
+        update(campo, pelX,pelY, iniRaquet, finRaquet, iniRaquetIA, finRaquetIA); //Actualizar la matriz campo
         Sleep(10);
     }
     while(gol==0);
@@ -114,6 +124,7 @@ void draw(char campo[V][H])
 void input(char campo[V][H], int *pelX, int *pelY,int *iniRaquet, int *finRaquet, int *iniRaquetIA, int *finRaquetIA,int *modX, int *modY, int *modIA, int *gol)
 {
     int i;
+    char key;
 //Verificación///////////
     if(*pelY ==1||*pelY == V-2)
     {
@@ -144,14 +155,65 @@ void input(char campo[V][H], int *pelX, int *pelY,int *iniRaquet, int *finRaquet
         {
             if(i==(*pelY))
             {
-                *modX*=-1;
+                *modX*=-10;
             }
 
         }
+    }
 
-//Modificación////////////
+    if(*iniRaquetIA ==1 ||*finRaquetIA==V-1)
+    {
+        *modIA *= -1;
+
+    }
+
+    //Modificación////////////
+
+    if(*gol==0)
+    {
+        //Pelota
+
+        *pelX +=(*modX);
+        *pelY +=(*modY);
+
+        //Raqueta IA
+        *iniRaquetIA += (*modIA);
+        *finRaquetIA += (*modIA);
 
 
+        //Raqueta jugador
+
+        if(kbhit() == 1)
+        {
+            key = getch();
+
+            if(key == 'p')
+            {
+                if(*iniRaquet!=1)
+                {
+
+                    *iniRaquet-=1;
+                    *finRaquet-=1;
+                }
+            }
+            if(key == 'l')
+            {
+                if(*finRaquet!=1)
+                {
+
+                    *iniRaquet+=1;
+                    *finRaquet+=1;
+                }
+            }
+        }
+    }
+    void update(char campo[V][H], int pelX, int pelY,int iniRaquet, int finRaquet, int iniRaquetIA, int finRaquetIA)
+    {
+
+        borde(campo);
+        raquetaJugador(campo, iniRaquet, finRaquet);
+        raquetaIA(campo, iniRaquetIA, finRaquetIA);
+        pelota(campo, pelX, pelY);
 
     }
 }
